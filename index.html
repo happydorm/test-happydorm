@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="행복기숙사 나의 기숙사 유형 테스트">
+<title>나의 기숙사 유형 테스트 | 행복기숙사</title>
+<style>
+:root{
+  --blue:#1877e8; --blue2:#0e63cf; --sky:#eef7ff; --ink:#17324d;
+  --muted:#6d7f91; --line:#dce8f4; --white:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:"Pretendard","Noto Sans KR",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#eaf6ff 0%,#f8fbff 55%,#eef7ff 100%)}
+button{font:inherit}
+.app{min-height:100vh;padding:28px 16px 44px}
+.shell{width:min(1040px,100%);margin:0 auto}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--blue);margin-bottom:18px}
+.brand-mark{width:34px;height:34px;border-radius:12px;background:#fff;display:grid;place-items:center;box-shadow:0 7px 22px #287bd51c;font-size:19px}
+.screen{display:none}
+.screen.active{display:block}
+.card{background:rgba(255,255,255,.94);border:1px solid rgba(220,232,244,.9);border-radius:30px;box-shadow:0 22px 70px rgba(46,103,155,.13);overflow:hidden}
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:600px}
+.hero-copy{padding:58px 52px;display:flex;flex-direction:column;justify-content:center}
+.badge{display:inline-flex;width:max-content;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:#eaf4ff;color:var(--blue);font-size:13px;font-weight:800;margin-bottom:17px}
+h1{font-size:clamp(42px,6vw,72px);line-height:1.02;letter-spacing:-3px;margin:0 0 20px}
+h1 .accent{color:#ff526d}
+.lead{font-size:18px;line-height:1.75;color:#5d7184;margin:0 0 30px}
+.hero-art{min-height:600px;background:linear-gradient(145deg,#dff2ff,#f7fbff);display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden}
+.hero-art:before,.hero-art:after{content:"";position:absolute;border-radius:50%;background:#fff7;filter:blur(1px)}
+.hero-art:before{width:330px;height:330px;top:50px;right:-100px}.hero-art:after{width:250px;height:250px;bottom:-80px;left:-70px}
+.mascot{width:min(310px,68%);height:auto;position:relative;z-index:2;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(38,93,140,.16))}
+.floating{position:absolute;z-index:3;font-size:38px;animation:float 3.4s ease-in-out infinite}
+.f1{top:85px;left:17%}.f2{top:145px;right:15%;animation-delay:.6s}.f3{bottom:125px;left:14%;animation-delay:1s}
+@keyframes float{50%{transform:translateY(-9px) rotate(3deg)}}
+.primary,.secondary{border:0;border-radius:17px;padding:16px 22px;font-weight:800;cursor:pointer;transition:.18s;display:inline-flex;justify-content:center;align-items:center;gap:8px}
+.primary{background:var(--blue);color:#fff;box-shadow:0 10px 25px rgba(24,119,232,.24)}
+.primary:hover{transform:translateY(-2px);background:var(--blue2)}
+.secondary{background:#fff;color:var(--blue);border:1px solid #bcd8f4}
+.note{font-size:12px;color:#8494a4;margin-top:12px}
+.quiz-card{padding:34px}
+.topline{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.qnum{font-weight:900;color:var(--blue)}
+.counter{font-size:13px;color:#7b8c9c;font-weight:700}
+.progress{height:8px;background:#e8f0f7;border-radius:99px;overflow:hidden;margin-bottom:34px}
+.progress > span{display:block;height:100%;background:linear-gradient(90deg,#1877e8,#57a7ff);border-radius:99px;transition:.3s}
+.question{font-size:30px;line-height:1.4;letter-spacing:-1px;margin:0 0 26px}
+.answers{display:grid;gap:12px}
+.answer{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:17px;padding:17px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:13px;color:#30495f;transition:.18s}
+.answer:hover{border-color:#9bc6f3;background:#f7fbff;transform:translateY(-1px)}
+.answer .n{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:#edf5fd;color:var(--blue);display:grid;place-items:center;font-size:13px;font-weight:900}
+.answer.selected{border-color:var(--blue);background:#edf6ff;box-shadow:0 0 0 3px #1877e815}
+.answer-text{line-height:1.55}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:28px}
+.nav button{min-width:120px}
+.nav .next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.result-card{padding:0}
+.result-head{padding:46px 46px 32px;text-align:center;background:linear-gradient(145deg,#eaf6ff,#fff)}
+.result-kicker{font-size:14px;color:var(--blue);font-weight:900;margin-bottom:9px}
+.result-title{font-size:clamp(32px,5vw,54px);line-height:1.15;letter-spacing:-2px;margin:0 0 10px}
+.result-title .type-name{color:#1877e8}
+.result-sub{margin:0;color:#65788a;line-height:1.7}
+.result-body{display:grid;grid-template-columns:360px 1fr;gap:34px;padding:38px}
+.result-mascot{min-height:390px;border-radius:26px;background:linear-gradient(145deg,#f5faff,#eaf5ff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.result-mascot .mascot{width:270px}
+.type-icon{position:absolute;right:24px;top:20px;width:64px;height:64px;border-radius:22px;background:#fff;display:grid;place-items:center;font-size:31px;box-shadow:0 10px 25px #2c78b51a}
+.result-info h3{font-size:22px;margin:0 0 12px}
+.result-info p{line-height:1.8;color:#5d7184;margin:0 0 22px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tag{background:#f0f6fb;border-radius:999px;padding:8px 11px;color:#537087;font-size:12px;font-weight:800}
+.tip-box{border:1px solid #dbe9f5;background:#fbfdff;border-radius:20px;padding:19px}
+.tip-box strong{display:block;color:#244a68;margin-bottom:8px}
+.tip-box ul{padding-left:18px;margin:0;color:#62788a;line-height:1.75}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}
+.all-types{padding:34px 38px 42px;background:#f8fbfe;border-top:1px solid #e4edf5}
+.all-types h3{text-align:center;margin:0 0 20px;font-size:22px}
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.type-mini{background:#fff;border:1px solid #e1ebf3;border-radius:18px;padding:16px}
+.type-mini .mini-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.type-mini .mini-icon{width:42px;height:42px;border-radius:14px;background:#eef6ff;display:grid;place-items:center;font-size:21px}
+.type-mini b{font-size:14px}.type-mini p{font-size:12px;color:#7a8d9e;line-height:1.5;margin:7px 0 0}
+.footer{text-align:center;color:#8a9aaa;font-size:11px;margin-top:18px}
+@media(max-width:780px){
+  .hero{grid-template-columns:1fr}.hero-art{min-height:380px;order:-1}.hero-copy{padding:38px 26px}.quiz-card{padding:24px 18px}.question{font-size:24px}.result-body{grid-template-columns:1fr;padding:24px}.result-mascot{min-height:320px}.type-grid{grid-template-columns:1fr 1fr}.result-head{padding:34px 24px 25px}
+}
+@media(max-width:480px){.app{padding:15px 10px 30px}.hero-art{min-height:330px}.hero-copy{padding:30px 22px}h1{letter-spacing:-2px}.type-grid{grid-template-columns:1fr}.nav button{min-width:0;flex:1}.result-actions button{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="shell">
+    <div class="brand"><div class="brand-mark">🏠</div> 행복기숙사</div>
+
+    <section id="start" class="screen active">
+      <div class="card hero">
+        <div class="hero-copy">
+          <span class="badge">✨ 행복기숙사 생활 테스트</span>
+          <h1>나의 기숙사<br><span class="accent">유형 테스트</span></h1>
+          <p class="lead">같은 기숙사에 살아도<br>생활하는 방법은 모두 다르니까!<br>나의 기숙사 생활 스타일을 알아보세요.</p>
+          <button class="primary" onclick="startQuiz()">테스트 시작하기 →</button>
+          <div class="note">총 11문항 · 약 2~3분 · 점수는 공개되지 않아요</div>
+        </div>
+        <div class="hero-art">
+          <div class="floating f1">✨</div><div class="floating f2">🏠</div><div class="floating f3">💙</div>
+          <img class="mascot" alt="꿈별이" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iNTIwIiB2aWV3Qm94PSIwIDAgNDIwIDUyMCI+CjxyZWN0IHdpZHRoPSI0MjAiIGhlaWdodD0iNTIwIiByeD0iNDAiIGZpbGw9IiNlYWY2ZmYiLz4KPGNpcmNsZSBjeD0iMjEwIiBjeT0iMjEwIiByPSIxMjAiIGZpbGw9IiMzOWE5ZmYiLz4KPGNpcmNsZSBjeD0iMTU1IiBjeT0iMTkwIiByPSIxMyIgZmlsbD0iIzE3MzI0ZCIvPjxjaXJjbGUgY3g9IjI2NSIgY3k9IjE5MCIgcj0iMTMiIGZpbGw9IiMxNzMyNGQiLz4KPGNpcmNsZSBjeD0iMTU4IiBjeT0iMTg2IiByPSI0IiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjI2OCIgY3k9IjE4NiIgcj0iNCIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTE3NSAyMzUgUTIxMCAyNjAgMjQ1IDIzNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTczMjRkIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTg1IDk1IFEyMTAgNDUgMjM1IDk1IiBmaWxsPSIjZmY1YjdhIi8+CjxwYXRoIGQ9Ik0xNDUgMTEyIFExMjUgNzIgMTQ1IDQ1IFExNzAgNzUgMTcwIDExMCIgZmlsbD0iI2ZmNWI3YSIvPgo8cGF0aCBkPSJNMjc1IDExMiBRMjk1IDcyIDI3NSA0NSBRMjUwIDc1IDI1MCAxMTAiIGZpbGw9IiNmZjViN2EiLz4KPHJlY3QgeD0iMTEwIiB5PSIzMTAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMTI1IiByeD0iNDUiIGZpbGw9IiNmZjViN2EiLz4KPHBhdGggZD0iTTE2NSAzMzUgbDQ1IDI1IC00NSAyNSAtNDUtMjV6IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xNjUgMzM1IGw0NSAyNSAtNDUgMjV6IiBmaWxsPSIjMTg3N2U4Ii8+CjxyZWN0IHg9IjEzNSIgeT0iNDMwIiB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHJ4PSIyNSIgZmlsbD0iIzE4NzdlOCIvPjxyZWN0IHg9IjIzMCIgeT0iNDMwIiB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHJ4PSIyNSIgZmlsbD0iIzE4NzdlOCIvPgo8L3N2Zz4=">
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="screen">
+      <div class="card quiz-card">
+        <div class="topline"><div class="qnum" id="qNum">Q1</div><div class="counter" id="counter">1 / 11</div></div>
+        <div class="progress"><span id="progressBar" style="width:9.09%"></span></div>
+        <h2 class="question" id="question"></h2>
+        <div class="answers" id="answers"></div>
+        <div class="nav">
+          <button class="secondary" id="prevBtn" onclick="prevQuestion()">← 이전</button>
+          <button class="primary next" id="nextBtn" onclick="nextQuestion()" disabled>다음 →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="card result-card">
+        <div class="result-head">
+          <div class="result-kicker">✨ 결과 보기</div>
+          <h2 class="result-title">당신의 기숙사 유형은<br><span class="type-name" id="resultTitle"></span></h2>
+          <p class="result-sub" id="resultSub"></p>
+        </div>
+        <div class="result-body">
+          <div class="result-mascot">
+            <div class="type-icon" id="resultIcon">📚</div>
+            <img class="mascot" alt="꿈별이" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iNTIwIiB2aWV3Qm94PSIwIDAgNDIwIDUyMCI+CjxyZWN0IHdpZHRoPSI0MjAiIGhlaWdodD0iNTIwIiByeD0iNDAiIGZpbGw9IiNlYWY2ZmYiLz4KPGNpcmNsZSBjeD0iMjEwIiBjeT0iMjEwIiByPSIxMjAiIGZpbGw9IiMzOWE5ZmYiLz4KPGNpcmNsZSBjeD0iMTU1IiBjeT0iMTkwIiByPSIxMyIgZmlsbD0iIzE3MzI0ZCIvPjxjaXJjbGUgY3g9IjI2NSIgY3k9IjE5MCIgcj0iMTMiIGZpbGw9IiMxNzMyNGQiLz4KPGNpcmNsZSBjeD0iMTU4IiBjeT0iMTg2IiByPSI0IiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjI2OCIgY3k9IjE4NiIgcj0iNCIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTE3NSAyMzUgUTIxMCAyNjAgMjQ1IDIzNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTczMjRkIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTg1IDk1IFEyMTAgNDUgMjM1IDk1IiBmaWxsPSIjZmY1YjdhIi8+CjxwYXRoIGQ9Ik0xNDUgMTEyIFExMjUgNzIgMTQ1IDQ1IFExNzAgNzUgMTcwIDExMCIgZmlsbD0iI2ZmNWI3YSIvPgo8cGF0aCBkPSJNMjc1IDExMiBRMjk1IDcyIDI3NSA0NSBRMjUwIDc1IDI1MCAxMTAiIGZpbGw9IiNmZjViN2EiLz4KPHJlY3QgeD0iMTEwIiB5PSIzMTAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMTI1IiByeD0iNDUiIGZpbGw9IiNmZjViN2EiLz4KPHBhdGggZD0iTTE2NSAzMzUgbDQ1IDI1IC00NSAyNSAtNDUtMjV6IiBmaWxsPSIjZmZmIi8+CjxwYXRoIGQ9Ik0xNjUgMzM1IGw0NSAyNSAtNDUgMjV6IiBmaWxsPSIjMTg3N2U4Ii8+CjxyZWN0IHg9IjEzNSIgeT0iNDMwIiB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHJ4PSIyNSIgZmlsbD0iIzE4NzdlOCIvPjxyZWN0IHg9IjIzMCIgeT0iNDMwIiB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHJ4PSIyNSIgZmlsbD0iIzE4NzdlOCIvPgo8L3N2Zz4=">
+          </div>
+          <div class="result-info">
+            <h3 id="resultHeading"></h3>
+            <p id="resultDesc"></p>
+            <div class="tags" id="resultTags"></div>
+            <div class="tip-box">
+              <strong>🏠 이런 기숙사 생활을 추천해요</strong>
+              <ul id="resultTips"></ul>
+            </div>
+            <div class="result-actions">
+              <button class="secondary" onclick="restart()">↻ 다시 테스트하기</button>
+              <button class="primary" onclick="shareResult()">↗ 결과 공유하기</button>
+            </div>
+          </div>
+        </div>
+        <div class="all-types">
+          <h3>🌟 행복기숙사의 6가지 생활 유형</h3>
+          <div class="type-grid" id="typeGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">행복기숙사 · 나의 기숙사 유형 테스트</div>
+  </div>
+</div>
+
+<script>
+const questions = [
+ {q:"새 학기가 시작됐다. 방에 짐을 풀고 가장 먼저 하는 행동은?", a:[
+  ["필요한 물건부터 꺼내고 생활 동선을 정리한다.", "planner"],
+  ["침대부터 정리하고 편하게 쉴 공간을 만든다.", "healer"],
+  ["주변을 둘러보며 기숙사에 뭐가 있는지 찾아본다.", "explorer"],
+  ["룸메이트와 인사를 나누고 서로 필요한 걸 이야기한다.", "social"]]},
+ {q:"시험까지 일주일. 그런데 오늘따라 공부가 영 안 된다.", a:[
+  ["일단 독서실에 간다. 장소를 바꾸면 집중될 것 같다.","planner"],
+  ["오늘은 쉬고 컨디션을 회복한 뒤 다시 시작한다.","healer"],
+  ["30분만 하자고 시작한 뒤 분위기를 탄다.","active"],
+  ["친구에게 같이 공부하자고 한다.","social"]]},
+ {q:"갑자기 2시간의 여유가 생겼다면?", a:[
+  ["미뤄뒀던 일을 처리한다.","planner"],
+  ["방에서 푹 쉬면서 충전한다.","healer"],
+  ["운동이나 산책을 한다.","active"],
+  ["기숙사 주변이나 새로운 공간을 찾아본다.","explorer"]]},
+ {q:"공용공간에서 누군가 정리하지 않고 자리를 떠났다.", a:[
+  ["내가 먼저 깔끔하게 정리한다.","smart"],
+  ["크게 신경 쓰지 않고 내 할 일을 한다.","healer"],
+  ["다음 사람을 위해 정리해두는 편이다.","social"],
+  ["반복된다면 관련 규칙이나 안내를 확인한다.","smart"]]},
+ {q:"기숙사에서 새로운 프로그램이 열린다는 소식을 들었다.", a:[
+  ["일정부터 확인하고 괜찮으면 신청한다.","planner"],
+  ["친구가 같이 가자고 하면 참여한다.","social"],
+  ["어떤 프로그램인지 자세히 찾아본다.","smart"],
+  ["새로운 경험이니까 일단 신청한다!","explorer"]]},
+ {q:"하루 종일 밖에 있다가 기숙사에 돌아왔다. 가장 하고 싶은 것은?", a:[
+  ["씻고 침대에서 푹 쉬기","healer"],
+  ["간단하게 정리하고 내일 준비하기","planner"],
+  ["운동하면서 하루를 마무리하기","active"],
+  ["룸메이트나 친구와 이야기하기","social"]]},
+ {q:"주말에 기숙사에 남아 있게 됐다.", a:[
+  ["밀린 공부를 한다.","planner"],
+  ["방에서 영화나 콘텐츠를 보며 쉰다.","healer"],
+  ["운동하거나 취미생활을 한다.","active"],
+  ["새로운 장소나 프로그램을 찾아본다.","explorer"]]},
+ {q:"기숙사 생활 중 예상하지 못했던 불편함이 생겼다.", a:[
+  ["해결 방법부터 찾아본다.","smart"],
+  ["일단 상황을 지켜본다.","healer"],
+  ["주변 사람들에게 의견을 물어본다.","social"],
+  ["관련 규정이나 안내사항을 확인한다.","smart"]]},
+ {q:"친구가 '기숙사 생활 어때?'라고 물어본다면?", a:[
+  ["시간을 효율적으로 쓸 수 있어서 좋아!","planner"],
+  ["내 생활 패턴을 만들 수 있어서 좋아.","healer"],
+  ["생각보다 할 수 있는 게 많더라!","explorer"],
+  ["사람들과 지내는 게 재밌어.","social"]]},
+ {q:"나에게 가장 이상적인 기숙사 하루는?", a:[
+  ["계획대로 공부하고 알차게 하루를 보낸 날","planner"],
+  ["충분히 쉬고 컨디션을 회복한 날","healer"],
+  ["공부도 하고 운동도 하며 균형 있게 보낸 날","active"],
+  ["새로운 경험이나 추억이 생긴 날","explorer"]]},
+ {q:"기숙사에서 내 생활을 더 편하게 만들어주는 것은?", a:[
+  ["할 일을 정리해주는 나만의 루틴","planner"],
+  ["편안하게 쉴 수 있는 나만의 공간","healer"],
+  ["운동·프로그램처럼 몸을 움직일 수 있는 활동","active"],
+  ["시설과 이용방법을 미리 알아두는 꼼꼼함","smart"]}
+];
+
+const types = {
+ planner:{name:"기숙사 라이프 플래너",icon:"📚",sub:"나만의 루틴으로 기숙사 생활을 알차게 만들어가는 타입",desc:"기숙사 생활에서도 나만의 루틴을 만들어 하루를 알차게 보내는 편이에요. 해야 할 일과 쉬어야 할 시간을 적절하게 나누면서 기숙사의 다양한 공간을 목적에 맞게 활용하는 스타일이에요.",tags:["#루틴","#자기관리","#시간활용","#알찬기숙사생활"],tips:["독서실에서 집중할 시간을 정해보세요.","휴게공간에서 짧은 휴식도 챙겨보세요.","기숙사 프로그램을 일정에 맞춰 하나씩 경험해보세요."]},
+ healer:{name:"힐링 메이커",icon:"🛋️",sub:"기숙사를 나만의 편안한 충전 공간으로 만드는 타입",desc:"바쁜 하루를 보낸 뒤 기숙사에서 제대로 쉬며 에너지를 회복하는 편이에요. 나에게 맞는 속도를 지키면서 편안하고 안정적인 생활을 만들어가는 스타일이에요.",tags:["#휴식","#충전","#나만의공간","#워라밸"],tips:["하루에 잠깐이라도 아무것도 하지 않는 시간을 만들어보세요.","편안한 휴식 공간을 나만의 루틴으로 활용해보세요.","쉬는 날에는 죄책감 없이 충분히 쉬어도 좋아요."]},
+ active:{name:"액티브 플레이어",icon:"🏃",sub:"운동부터 프로그램까지 다양한 활동을 즐기는 타입",desc:"가만히 있기보다 직접 움직이고 경험하면서 기숙사 생활의 즐거움을 찾는 편이에요. 공부와 휴식뿐 아니라 운동과 다양한 활동까지 균형 있게 챙기는 스타일이에요.",tags:["#활동적","#운동","#프로그램","#균형생활"],tips:["체력단련실을 생활 루틴에 넣어보세요.","기숙사에서 열리는 새로운 프로그램을 경험해보세요.","활동 후에는 충분한 휴식도 함께 챙겨보세요."]},
+ explorer:{name:"기숙사 탐험가",icon:"🔎",sub:"기숙사의 다양한 시설과 새로운 경험을 찾아다니는 타입",desc:"'여기엔 뭐가 있지?'라는 궁금증이 많은 편이에요. 기숙사의 다양한 시설과 프로그램을 발견하고 직접 경험하면서 나만의 기숙사 생활을 넓혀가는 스타일이에요.",tags:["#호기심","#새로운경험","#시설탐방","#도전"],tips:["평소 지나치던 공간도 한 번씩 둘러보세요.","기숙사 프로그램 공지를 가끔 확인해보세요.","친구와 함께 새로운 공간을 탐험해보세요."]},
+ social:{name:"소셜 메이트",icon:"👫",sub:"사람들과 함께하며 기숙사에서 추억을 만드는 타입",desc:"혼자만의 시간도 좋지만 사람들과 함께할 때 기숙사 생활의 즐거움을 더 크게 느끼는 편이에요. 새로운 사람을 만나고 함께 활동하며 추억을 만드는 스타일이에요.",tags:["#소통","#친구","#함께","#추억"],tips:["룸메이트와 작은 생활 약속을 정해보세요.","기숙사 프로그램에 친구와 함께 참여해보세요.","혼자 지내는 친구에게 먼저 말을 걸어보는 것도 좋아요."]},
+ smart:{name:"스마트 리빙러",icon:"🧹",sub:"생활의 디테일까지 꼼꼼하게 챙기는 타입",desc:"기숙사 생활을 더 편하고 쾌적하게 만드는 방법을 잘 찾아내는 편이에요. 시설과 이용방법, 생활환경을 꼼꼼하게 살피면서 효율적인 생활을 만들어가는 스타일이에요.",tags:["#꼼꼼함","#생활꿀팁","#효율","#스마트생활"],tips:["자주 쓰는 시설의 이용시간을 미리 알아두세요.","생활용품은 꼭 필요한 것부터 정리해두세요.","공용공간 이용규칙도 한 번씩 확인해보세요."]}
+};
+
+let idx=0, answers=new Array(questions.length).fill(null), scores={planner:0,healer:0,active:0,explorer:0,social:0,smart:0};
+
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});}
+function startQuiz(){idx=0;answers.fill(null);show("quiz");renderQuestion();}
+function renderQuestion(){
+ const q=questions[idx]; document.getElementById("qNum").textContent=`Q${idx+1}`;
+ document.getElementById("counter").textContent=`${idx+1} / ${questions.length}`;
+ document.getElementById("progressBar").style.width=((idx+1)/questions.length*100)+"%";
+ document.getElementById("question").textContent=q.q;
+ const box=document.getElementById("answers");box.innerHTML="";
+ q.a.forEach((item,i)=>{
+   const b=document.createElement("button");b.className="answer"+(answers[idx]===i?" selected":"");
+   b.innerHTML=`<span class="n">${i+1}</span><span class="answer-text">${item[0]}</span>`;
+   b.onclick=()=>{answers[idx]=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");document.getElementById("nextBtn").disabled=false;};
+   box.appendChild(b);
+ });
+ document.getElementById("prevBtn").disabled=idx===0;
+ const next=document.getElementById("nextBtn");next.disabled=answers[idx]===null;next.textContent=idx===questions.length-1?"결과 보기 ✨":"다음 →";
+}
+function prevQuestion(){if(idx>0){idx--;renderQuestion();}}
+function nextQuestion(){
+ if(answers[idx]===null)return;
+ if(idx<questions.length-1){idx++;renderQuestion();}else showResult();
+}
+function showResult(){
+ scores={planner:0,healer:0,active:0,explorer:0,social:0,smart:0};
+ answers.forEach((ans,i)=>{if(ans!==null)scores[questions[i].a[ans][1]]++;});
+ // deterministic tie-break: planner > healer > active > explorer > social > smart
+ const order=["planner","healer","active","explorer","social","smart"];
+ const result=order.reduce((best,k)=>scores[k]>scores[best]?k:best,order[0]);
+ const t=types[result];
+ document.getElementById("resultTitle").textContent=t.name;
+ document.getElementById("resultHeading").textContent=t.name;
+ document.getElementById("resultSub").textContent=t.sub;
+ document.getElementById("resultDesc").textContent=t.desc;
+ document.getElementById("resultIcon").textContent=t.icon;
+ document.getElementById("resultTags").innerHTML=t.tags.map(x=>`<span class="tag">${x}</span>`).join("");
+ document.getElementById("resultTips").innerHTML=t.tips.map(x=>`<li>${x}</li>`).join("");
+ show("result");
+}
+function restart(){show("start");}
+async function shareResult(){
+ const title=document.getElementById("resultTitle").textContent;
+ const text=`행복기숙사 나의 기숙사 유형 테스트 결과는 "${title}"!`;
+ if(navigator.share){try{await navigator.share({title:"나의 기숙사 유형 테스트",text});return;}catch(e){}}
+ try{await navigator.clipboard.writeText(text);alert("결과 문구가 클립보드에 복사됐어요!");}catch(e){alert(text);}
+}
+function renderTypeGrid(){
+ const grid=document.getElementById("typeGrid");
+ Object.values(types).forEach(t=>{
+  const el=document.createElement("div");el.className="type-mini";
+  el.innerHTML=`<div class="mini-top"><div class="mini-icon">${t.icon}</div><b>${t.name}</b></div><p>${t.sub}</p>`;
+  grid.appendChild(el);
+ });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  renderTypeGrid();
+  const startButton = document.querySelector('#start .primary');
+  if (startButton) startButton.addEventListener('click', startQuiz);
+});
+
+</script>
+</body>
+</html>
